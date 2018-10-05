@@ -23,22 +23,33 @@ func (l *Lexer) NextToken() token.Token {
 	l.skipWhitespace()
 
 	switch l.ch {
-	//TODO: change it to read FUNCTION later
-	case 'p':
+	// keywords
+	case 'p': //TODO: change it to read FUNCTION later
 		tok = newToken(token.FUNCTION, l.ch)
+
+	// operators
 	case '+':
 		tok = newToken(token.PLUS, l.ch)
 	case '-':
 		tok = newToken(token.MINUS, l.ch)
+	case '*':
+		tok = newToken(token.ASTERISK, l.ch)
+
+	// parenthesis
 	case '(':
 		tok = newToken(token.LPAREN, l.ch)
 	case ')':
 		tok = newToken(token.RPAREN, l.ch)
+
+	// new lien
 	case '\n':
 		tok = newToken(token.NEWLINE, l.ch)
+
+	// EOF
 	case 0:
 		tok.Literal = ""
 		tok.Type = token.EOF
+
 	default:
 		if isLetter(l.ch) {
 			// TODO

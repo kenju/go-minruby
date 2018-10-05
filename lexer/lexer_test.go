@@ -10,6 +10,7 @@ func TestLexer_NextToken(t *testing.T) {
 	input := `
 	p(1 + 1)
 	4 - 3
+	3 * 4
 	`
 
 	tests := []struct {
@@ -32,6 +33,13 @@ func TestLexer_NextToken(t *testing.T) {
 		{token.INT, "4"},
 		{token.MINUS, "-"},
 		{token.INT, "3"},
+
+		{token.NEWLINE, "\n"},
+
+		// 3 * 4
+		{token.INT, "3"},
+		{token.ASTERISK, "*"},
+		{token.INT, "4"},
 
 	}
 

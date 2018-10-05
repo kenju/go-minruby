@@ -10,6 +10,7 @@ const (
 	// Operators
 	PLUS  = "+"
 	MINUS = "-"
+	ASTERISK = "*"
 
 	// Symbols
 	LPAREN = "("

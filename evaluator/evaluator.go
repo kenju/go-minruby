@@ -58,10 +58,14 @@ func evalIntegerInfixExpression(operator string, left, right object.Object) obje
 	rightVal := right.(*object.Integer).Value
 
 	switch operator {
+
 	case "+":
 		return &object.Integer{Value: leftVal + rightVal}
 	case "-":
 		return &object.Integer{Value: leftVal - rightVal}
+	case "*":
+		return &object.Integer{Value: leftVal * rightVal}
+
 	default:
 		return newError("unknown operator: %s %s %s", left.Type(), operator, right.Type())
 	}
