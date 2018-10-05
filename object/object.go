@@ -17,20 +17,6 @@ type Object interface {
 	Inspect() string
 }
 
-// Enviroment
-
-func NewEnvironment() *Environment {
-	return &Environment{
-		store: make(map[string]Object),
-		outer: nil,
-	}
-}
-
-type Environment struct {
-	store map[string]Object
-	outer *Environment
-}
-
 // Each objects
 
 type Integer struct {
