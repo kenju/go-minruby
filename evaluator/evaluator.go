@@ -31,7 +31,15 @@ func Eval(node ast.Node, env *object.Environment) object.Object {
 			return right
 		}
 		return evalInfixExpression(node.Operator, left, right)
+
+	case *ast.PrefixExpression:
+		right := Eval(node.Right, env)
+		if isError(right) {
+			return right
+		}
+		return evalPrefixExpression(node.Operator, right)
 	}
+
 
 	return nil
 }
@@ -83,6 +91,19 @@ func evalInfixExpression(operator string, left, right object.Object) object.Obje
 		return newError("type mismatch: %s %s %s", left.Type(), operator, right.Type())
 	default:
 		return newError("unknown operator: %s %s %s", left.Type(), operator, right.Type())
+	}
+}
+
+func evalPrefixExpression(operator string, right object.Object) object.Object {
+	switch operator {
+	case "-":
+		if right.Type() != object.INTEGER_OBJ {
+			return newError("unknown operator: -%s", right.Type())
+		}
+		value := right.(*object.Integer).Value
+		return &object.Integer{Value: -value}
+	default:
+		return newError("unknown operator: %s%s", operator, right.Type())
 	}
 }
 
