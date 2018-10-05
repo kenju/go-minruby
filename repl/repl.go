@@ -35,10 +35,6 @@ func Start(in io.Reader, out io.Writer) {
 			continue
 		}
 
-		for _, st := range program.Statements {
-			io.WriteString(out, "[DEBUG]"+st.String()+"\n")
-		}
-
 		evaluated := evaluator.Eval(program, env)
 		if evaluated != nil {
 			io.WriteString(out, evaluated.Inspect())
