@@ -211,7 +211,6 @@ func TestIfExpression(t *testing.T) {
 	}
 }
 
-
 func testInfixExpression(t *testing.T, exp ast.Expression, left interface{},
 	operator string, right interface{}) bool {
 
