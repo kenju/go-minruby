@@ -1,6 +1,8 @@
 package ast
 
 import (
+	"bytes"
+
 	"github.com/kenju/go-minruby/token"
 )
 
@@ -18,4 +20,24 @@ func (es *ExpressionStatement) String() string {
 		return es.Expression.String()
 	}
 	return ""
+}
+
+type VariableStatement struct {
+	Token token.Token // IDENT comes in
+	Name  *Identifier
+	Value Expression
+}
+
+func (vs *VariableStatement) statementNode()       {}
+func (vs *VariableStatement) TokenLiteral() string { return vs.Token.Literal }
+func (vs *VariableStatement) String() string {
+	var out bytes.Buffer
+	out.WriteString(vs.Name.String())
+	out.WriteString(" = ")
+
+	if vs.Value != nil {
+		out.WriteString(vs.Value.String())
+	}
+
+	return out.String()
 }
