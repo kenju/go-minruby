@@ -24,7 +24,10 @@ const (
 	EQ         = "=="
 	NOT_EQ     = "!="
 
-	// Symbols
+	// Objects
+	STRING = "STRING"
+
+	// Parenthesis
 	LPAREN = "("
 	RPAREN = ")"
 

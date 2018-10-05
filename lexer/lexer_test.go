@@ -27,6 +27,8 @@ func TestLexer_NextToken(t *testing.T) {
 	!true
 	10 == 10
 	10 != 9
+	"foobar"
+	"foo bar"
 	`
 
 	tests := []struct {
@@ -146,8 +148,8 @@ func TestLexer_NextToken(t *testing.T) {
 		{token.NEWLINE, "\n"},
 
 		// !true
-		{ token.BANG, "!" },
-		{ token.TRUE, "true" },
+		{token.BANG, "!"},
+		{token.TRUE, "true"},
 
 		{token.NEWLINE, "\n"},
 
@@ -162,6 +164,16 @@ func TestLexer_NextToken(t *testing.T) {
 		{token.INT, "10"},
 		{token.NOT_EQ, "!="},
 		{token.INT, "9"},
+
+		{token.NEWLINE, "\n"},
+
+		// "foobar"
+		{token.STRING, "foobar"},
+
+		{token.NEWLINE, "\n"},
+
+		// "foo bar"
+		{token.STRING, "foo bar"},
 	}
 
 	lexer := New(input)

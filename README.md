@@ -22,6 +22,9 @@ false
 (=･ω･=)>> y = x
 (=･ω･=)>> x + y
 10
+(=･ω･=)>> msg = "hello"
+(=･ω･=)>> msg
+hello
 ```
 
 # References
