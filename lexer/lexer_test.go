@@ -8,7 +8,7 @@ import (
 
 func TestLexer_NextToken(t *testing.T) {
 	input := `
-	p(3)
+	p(3);
 	p(1 + 1)
 	4 - 3
 	3 * 4
@@ -42,6 +42,7 @@ func TestLexer_NextToken(t *testing.T) {
 		{token.LPAREN, "("},
 		{token.INT, "3"},
 		{token.RPAREN, ")"},
+		{token.SEMICOLON, ";"},
 
 		{token.NEWLINE, "\n"},
 

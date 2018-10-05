@@ -24,6 +24,9 @@ const (
 	EQ         = "=="
 	NOT_EQ     = "!="
 
+	// Symbols
+	SEMICOLON = ";"
+
 	// Objects
 	STRING = "STRING"
 
