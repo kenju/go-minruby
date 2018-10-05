@@ -21,6 +21,11 @@ func TestParsingInfixExpressions(t *testing.T) {
 		{"5 / 5", 5, "/", 5},
 		{"5 > 5", 5, ">", 5},
 		{"5 < 5", 5, "<", 5},
+		{"5 == 5", 5, "==", 5},
+		{"5 != 5", 5, "!=", 5},
+		{"true == true", true, "==", true},
+		{"true != false", true, "!=", false},
+		{"false == false", false, "==", false},
 	}
 
 	for _, tt := range tests {
@@ -53,6 +58,9 @@ func TestParsingPrefixExpressions(t *testing.T) {
 		value    interface{}
 	}{
 		{"-15", "-", 15},
+		{"!5", "!", 5},
+		{"!true", "!", true},
+		{"!false", "!", false},
 	}
 
 	for _, tt := range tests {

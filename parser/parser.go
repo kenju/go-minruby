@@ -12,7 +12,7 @@ import (
 const (
 	_ int = iota
 	LOWEST
-	EQUALS
+	EQUALS      // ==
 	LESSGREATER // >, <
 	SUM         // +, -
 	PRODUCT     // *, /, %
@@ -46,6 +46,7 @@ func New(l *lexer.Lexer) *Parser {
 	p.prefixParseFns = make(map[token.TokenType]prefixParseFn)
 	p.registerPrefix(token.IDENT, p.parseIdentifier)
 	p.registerPrefix(token.INT, p.parseIntegerLiteral)
+	p.registerPrefix(token.BANG, p.parsePrefixExpression)
 	p.registerPrefix(token.MINUS, p.parsePrefixExpression)
 
 	// infix registration
@@ -57,6 +58,8 @@ func New(l *lexer.Lexer) *Parser {
 	p.registerInfix(token.PERCENTAGE, p.parseInfixExpression)
 	p.registerInfix(token.LT, p.parseInfixExpression)
 	p.registerInfix(token.GT, p.parseInfixExpression)
+	p.registerInfix(token.EQ, p.parseInfixExpression)
+	p.registerInfix(token.NOT_EQ, p.parseInfixExpression)
 	p.registerPrefix(token.LPAREN, p.parseGroupedExpression)
 	p.registerPrefix(token.TRUE, p.parseBoolean)
 	p.registerPrefix(token.FALSE, p.parseBoolean)
@@ -257,6 +260,9 @@ func (p *Parser) noPrefixParseFnError(t token.TokenType) {
 // operator precedences
 
 var precedences = map[token.TokenType]int{
+	// ==, !=
+	token.EQ: EQUALS,
+	token.NOT_EQ: EQUALS,
 	// <, >
 	token.LT: LESSGREATER,
 	token.GT: LESSGREATER,

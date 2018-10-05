@@ -20,6 +20,9 @@ const (
 	PERCENTAGE = "%"
 	LT         = "<"
 	GT         = ">"
+	BANG       = "!"
+	EQ         = "=="
+	NOT_EQ     = "!="
 
 	// Symbols
 	LPAREN = "("

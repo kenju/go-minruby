@@ -71,7 +71,7 @@ func TestVariableStatements(t *testing.T) {
 	}
 }
 
-func TestEvalBooleanExpressoins(t *testing.T) {
+func TestEvalBooleanExpressions(t *testing.T) {
 	tests := []struct {
 		input    string
 		expected bool
@@ -82,6 +82,15 @@ func TestEvalBooleanExpressoins(t *testing.T) {
 		{"1 > 2", false},
 		{"1 < 1", false},
 		{"1 > 1", false},
+		{"1 == 1", true},
+		{"1 != 1", false},
+		{"1 == 2", false},
+		{"1 != 2", true},
+		{"true == true", true},
+		{"false == false", true},
+		{"true == false", false},
+		{"true != false", true},
+		{"false != true", true},
 	}
 
 	for _, tt := range tests {

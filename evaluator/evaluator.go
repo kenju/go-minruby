@@ -7,6 +7,12 @@ import (
 	"github.com/kenju/go-minruby/object"
 )
 
+var (
+	NULL  = &object.Null{}
+	TRUE  = &object.Boolean{Value: true}
+	FALSE = &object.Boolean{Value: false}
+)
+
 func Eval(node ast.Node, env *object.Environment) object.Object {
 	switch node := node.(type) {
 
@@ -113,6 +119,11 @@ func evalIntegerInfixExpression(operator string, left, right object.Object) obje
 	case ">":
 		return nativeBoolToBooleanObject(leftVal > rightVal)
 
+	case "==":
+		return nativeBoolToBooleanObject(leftVal == rightVal)
+	case "!=":
+		return nativeBoolToBooleanObject(leftVal != rightVal)
+
 	default:
 		return newError("unknown operator: %s %s %s", left.Type(), operator, right.Type())
 	}
@@ -122,6 +133,10 @@ func evalInfixExpression(operator string, left, right object.Object) object.Obje
 	switch {
 	case left.Type() == object.INTEGER_OBJ && right.Type() == object.INTEGER_OBJ:
 		return evalIntegerInfixExpression(operator, left, right)
+	case operator == "==":
+		return nativeBoolToBooleanObject(left == right)
+	case operator == "!=":
+		return nativeBoolToBooleanObject(left != right)
 	case left.Type() != right.Type():
 		return newError("type mismatch: %s %s %s", left.Type(), operator, right.Type())
 	default:
@@ -137,6 +152,17 @@ func evalPrefixExpression(operator string, right object.Object) object.Object {
 		}
 		value := right.(*object.Integer).Value
 		return &object.Integer{Value: -value}
+	case "!":
+		switch right {
+		case TRUE:
+			return FALSE
+		case FALSE:
+			return TRUE
+		case NULL:
+			return TRUE
+		default:
+			return FALSE
+		}
 	default:
 		return newError("unknown operator: %s%s", operator, right.Type())
 	}
@@ -158,9 +184,9 @@ func evalExpressions(exps []ast.Expression, env *object.Environment) []object.Ob
 
 func nativeBoolToBooleanObject(input bool) *object.Boolean {
 	if input {
-		return &object.Boolean{Value: true}
+		return TRUE
 	}
-	return &object.Boolean{Value: false}
+	return FALSE
 }
 
 func applyFunction(fn object.Object, args []object.Object) object.Object {
