@@ -12,16 +12,16 @@ import (
 const (
 	_ int = iota
 	LOWEST
-	EQUALS      // ==
-	LESSGREATER // >, <
-	SUM         // +, -
-	PRODUCT     // *, /, %
-	PREFIX      // -x, !x
+	EQUALS       // ==
+	LESSGREATER  // >, <
+	SUM          // +, -
+	PRODUCT      // *, /, %
+	PREFIX       // -x, !x
 )
 
 type (
 	prefixParseFn func() ast.Expression
-	infixParseFn  func(ast.Expression) ast.Expression
+	infixParseFn func(ast.Expression) ast.Expression
 )
 
 type Parser struct {
@@ -208,10 +208,7 @@ func (p *Parser) parseStringLiteral() ast.Expression {
 }
 
 func (p *Parser) parseBoolean() ast.Expression {
-	return &ast.Boolean{
-		Token: p.curToken,
-		Value: p.curTokenIs(token.TRUE),
-	}
+	return &ast.Boolean{Token: p.curToken, Value: p.curTokenIs(token.TRUE)}
 }
 
 func (p *Parser) parseGroupedExpression() ast.Expression {
