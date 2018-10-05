@@ -1,9 +1,10 @@
 package main
 
 import (
-	"github.com/kenju/go-minruby/repl"
 	"log"
 	"os"
+
+	"github.com/kenju/go-minruby/repl"
 )
 
 func main() {
