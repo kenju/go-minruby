@@ -11,6 +11,7 @@ const (
 	PLUS  = "+"
 	MINUS = "-"
 	ASTERISK = "*"
+	SLASH = "/"
 
 	// Symbols
 	LPAREN = "("
