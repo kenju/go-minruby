@@ -55,7 +55,12 @@ func New(l *lexer.Lexer) *Parser {
 	p.registerInfix(token.ASTERISK, p.parseInfixExpression)
 	p.registerInfix(token.SLASH, p.parseInfixExpression)
 	p.registerInfix(token.PERCENTAGE, p.parseInfixExpression)
+	p.registerInfix(token.LT, p.parseInfixExpression)
+	p.registerInfix(token.GT, p.parseInfixExpression)
 	p.registerPrefix(token.LPAREN, p.parseGroupedExpression)
+	p.registerPrefix(token.TRUE, p.parseBoolean)
+	p.registerPrefix(token.FALSE, p.parseBoolean)
+
 
 	// read two tokens to set curToken/peekToken
 	p.nextToken()
@@ -197,6 +202,13 @@ func (p *Parser) parseIntegerLiteral() ast.Expression {
 	return literal
 }
 
+func (p *Parser) parseBoolean() ast.Expression {
+	return &ast.Boolean{
+		Token: p.curToken,
+		Value: p.curTokenIs(token.TRUE),
+	}
+}
+
 func (p *Parser) parseGroupedExpression() ast.Expression {
 	p.nextToken()
 	exp := p.parseExpression(LOWEST)
@@ -246,13 +258,15 @@ func (p *Parser) noPrefixParseFnError(t token.TokenType) {
 // operator precedences
 
 var precedences = map[token.TokenType]int{
+	// <, >
+	token.LT: LESSGREATER,
+	token.GT: LESSGREATER,
 	// +, -
 	token.PLUS:  SUM,
 	token.MINUS: SUM,
-	// *, /
+	// *, /, %
 	token.ASTERISK: PRODUCT,
 	token.SLASH:    PRODUCT,
-	// %
 	token.PERCENTAGE: PRODUCT,
 }
 

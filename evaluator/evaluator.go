@@ -28,6 +28,9 @@ func Eval(node ast.Node, env *object.Environment) object.Object {
 	case *ast.IntegerLiteral:
 		return &object.Integer{Value: node.Value}
 
+	case *ast.Boolean:
+		return nativeBoolToBooleanObject(node.Value)
+
 	case *ast.Identifier:
 		if val, ok := env.Get(node.Value); ok {
 			return val
@@ -105,6 +108,11 @@ func evalIntegerInfixExpression(operator string, left, right object.Object) obje
 	case "%":
 		return &object.Integer{Value: leftVal % rightVal}
 
+	case "<":
+		return nativeBoolToBooleanObject(leftVal < rightVal)
+	case ">":
+		return nativeBoolToBooleanObject(leftVal > rightVal)
+
 	default:
 		return newError("unknown operator: %s %s %s", left.Type(), operator, right.Type())
 	}
@@ -146,6 +154,13 @@ func evalExpressions(exps []ast.Expression, env *object.Environment) []object.Ob
 	}
 
 	return result
+}
+
+func nativeBoolToBooleanObject(input bool) *object.Boolean {
+	if input {
+		return &object.Boolean{Value: true}
+	}
+	return &object.Boolean{Value: false}
 }
 
 func applyFunction(fn object.Object, args []object.Object) object.Object {
