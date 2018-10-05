@@ -3,7 +3,9 @@ package repl
 import (
 	"bufio"
 	"fmt"
+	"github.com/kenju/go-minruby/evaluator"
 	"github.com/kenju/go-minruby/lexer"
+	"github.com/kenju/go-minruby/object"
 	"github.com/kenju/go-minruby/parser"
 	"io"
 )
@@ -12,6 +14,7 @@ const PROMPT = "(=･ω･=)>> "
 
 func Start(in io.Reader, out io.Writer) {
 	scanner := bufio.NewScanner(in)
+	env := object.NewEnvironment()
 
 	for {
 		fmt.Printf(PROMPT)
@@ -32,10 +35,14 @@ func Start(in io.Reader, out io.Writer) {
 		}
 
 		for _, st := range program.Statements {
-			io.WriteString(out, st.String())
+			io.WriteString(out, "[DEBUG]" + st.String() + "\n")
 		}
 
-		io.WriteString(out, "\n")
+		evaluated := evaluator.Eval(program, env)
+		if evaluated != nil {
+			io.WriteString(out, evaluated.Inspect())
+			io.WriteString(out, "\n")
+		}
 	}
 }
 
