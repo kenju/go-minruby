@@ -23,10 +23,6 @@ func (l *Lexer) NextToken() token.Token {
 	l.skipWhitespace()
 
 	switch l.ch {
-	// keywords
-	case 'p': //TODO: change it to read FUNCTION later
-		tok = newToken(token.FUNCTION, l.ch)
-
 	// operators
 	case '+':
 		tok = newToken(token.PLUS, l.ch)
@@ -56,13 +52,15 @@ func (l *Lexer) NextToken() token.Token {
 
 	default:
 		if isLetter(l.ch) {
-			// TODO
+			tok.Literal = l.readIdentifier()
+			tok.Type = token.LookupIdent(tok.Literal)
+			return tok
 		} else if isDigit(l.ch) {
 			tok.Type = token.INT
 			tok.Literal = l.readNumber()
 			return tok
 		} else {
-			// TODO
+			tok = newToken(token.ILLEGAL, l.ch)
 		}
 	}
 
@@ -79,6 +77,14 @@ func (l *Lexer) readChar() {
 	}
 	l.position = l.readPosition // set position
 	l.readPosition += 1         // advance to the next char
+}
+
+func (l *Lexer) readIdentifier() string {
+	position := l.position
+	for isLetter(l.ch) {
+		l.readChar()
+	}
+	return l.input[position:l.position]
 }
 
 func (l *Lexer) readNumber() string {
