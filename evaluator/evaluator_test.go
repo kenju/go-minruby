@@ -39,6 +39,11 @@ func TestEvalIntegerExpression(t *testing.T) {
 		{"10 % 2", 0},
 		// mixture of operators
 		{"1 + 2 + 3 % 4 * 5 * 6 + 7 - 8 / 9", 100 },
+		// with parenthesis
+		{"2 * (5 + 10)", 30},
+		{"3 * 3 * 3 + 10", 37},
+		{"3 * (3 * 3) + 10", 37},
+		{"(5 + 10 * 2 + 15 / 3) * 2 + -10", 50},
 
 	}
 

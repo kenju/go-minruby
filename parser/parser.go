@@ -13,15 +13,15 @@ const (
 	_ int = iota
 	LOWEST
 	EQUALS
-	LESSGREATER // >, <
-	SUM         // +, -
-	PRODUCT     // *, /, %
-	PREFIX      // -x, !x
+	LESSGREATER  // >, <
+	SUM          // +, -
+	PRODUCT      // *, /, %
+	PREFIX       // -x, !x
 )
 
 type (
 	prefixParseFn func() ast.Expression
-	infixParseFn  func(ast.Expression) ast.Expression
+	infixParseFn func(ast.Expression) ast.Expression
 )
 
 type Parser struct {
@@ -54,6 +54,7 @@ func New(l *lexer.Lexer) *Parser {
 	p.registerInfix(token.ASTERISK, p.parseInfixExpression)
 	p.registerInfix(token.SLASH, p.parseInfixExpression)
 	p.registerInfix(token.PERCENTAGE, p.parseInfixExpression)
+	p.registerPrefix(token.LPAREN, p.parseGroupedExpression)
 
 	// read two tokens to set curToken/peekToken
 	p.nextToken()
@@ -82,16 +83,6 @@ func (p *Parser) ParseProgram() *ast.Program {
 
 	return program
 }
-
-// curToken/peekToken modification
-
-func (p *Parser) nextToken() {
-	p.curToken = p.peekToken
-	p.peekToken = p.l.NextToken()
-}
-
-func (p *Parser) curTokenIs(t token.TokenType) bool  { return p.curToken.Type == t }
-func (p *Parser) peekTokenIs(t token.TokenType) bool { return p.peekToken.Type == t }
 
 // parse core logic
 
@@ -162,7 +153,6 @@ func (p *Parser) parsePrefixExpression() ast.Expression {
 	return expression
 }
 
-
 func (p *Parser) parseIntegerLiteral() ast.Expression {
 	literal := &ast.IntegerLiteral{Token: p.curToken}
 
@@ -176,6 +166,38 @@ func (p *Parser) parseIntegerLiteral() ast.Expression {
 	literal.Value = value
 
 	return literal
+}
+
+func (p *Parser) parseGroupedExpression() ast.Expression {
+	p.nextToken()
+	exp := p.parseExpression(LOWEST)
+	if !p.expectPeek(token.RPAREN) {
+		return nil
+	}
+	return exp
+}
+
+// curToken/peekToken modification
+
+func (p *Parser) nextToken() {
+	p.curToken = p.peekToken
+	p.peekToken = p.l.NextToken()
+}
+
+func (p *Parser) curTokenIs(t token.TokenType) bool  { return p.curToken.Type == t }
+func (p *Parser) peekTokenIs(t token.TokenType) bool { return p.peekToken.Type == t }
+func (p *Parser) expectPeek(t token.TokenType) bool {
+	if p.peekTokenIs(t) {
+		p.nextToken()
+		return true
+	} else {
+		p.peekError(t)
+		return false
+	}
+}
+func (p *Parser) peekError(t token.TokenType) {
+	msg := fmt.Sprintf("expected next token to be %s, got %s instead", t, p.peekToken.Type)
+	p.errors = append(p.errors, msg)
 }
 
 // infix & prefix
@@ -196,11 +218,11 @@ func (p *Parser) noPrefixParseFnError(t token.TokenType) {
 
 var precedences = map[token.TokenType]int{
 	// +, -
-	token.PLUS: SUM,
+	token.PLUS:  SUM,
 	token.MINUS: SUM,
 	// *, /
 	token.ASTERISK: PRODUCT,
-	token.SLASH: PRODUCT,
+	token.SLASH:    PRODUCT,
 	// %
 	token.PERCENTAGE: PRODUCT,
 }
