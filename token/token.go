@@ -18,6 +18,8 @@ const (
 	ASTERISK   = "*"
 	SLASH      = "/"
 	PERCENTAGE = "%"
+	LT         = "<"
+	GT         = ">"
 
 	// Symbols
 	LPAREN = "("
@@ -27,6 +29,9 @@ const (
 	FUNCTION = "FUNCTION"
 	TRUE     = "TRUE"
 	FALSE    = "FALSE"
+	IF       = "IF"
+	ELSE     = "ELSE"
+	END      = "END"
 )
 
 type TokenType string
@@ -39,6 +44,9 @@ type Token struct {
 var keywords = map[string]TokenType{
 	"true":  TRUE,
 	"false": FALSE,
+	"if":    IF,
+	"else":  ELSE,
+	"end":   END,
 }
 
 func LookupIdent(ident string) TokenType {

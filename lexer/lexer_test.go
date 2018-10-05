@@ -17,6 +17,13 @@ func TestLexer_NextToken(t *testing.T) {
 	1 + 2 + 3 % 4 * 5 * 6 + 7 - 8 / 9
 	-10
 	x = 42
+	true
+	false
+	if 7 > 5
+		1
+	else
+		0
+	end
 	`
 
 	tests := []struct {
@@ -102,6 +109,36 @@ func TestLexer_NextToken(t *testing.T) {
 		{token.IDENT, "x"},
 		{token.ASSIGN, "="},
 		{token.INT, "42"},
+
+		{token.NEWLINE, "\n"},
+
+		// true
+		{token.TRUE, "true"},
+
+		{token.NEWLINE, "\n"},
+
+		// false
+		{token.FALSE, "false"},
+
+		{token.NEWLINE, "\n"},
+
+		// if 7 > 5
+		//   1
+		//  else
+		//    0
+		//  end
+		{token.IF, "if"},
+		{token.INT, "7"},
+		{token.GT, ">"},
+		{token.INT, "5"},
+		{token.NEWLINE, "\n"},
+		{token.INT, "1"},
+		{token.NEWLINE, "\n"},
+		{token.ELSE, "else"},
+		{token.NEWLINE, "\n"},
+		{token.INT, "0"},
+		{token.NEWLINE, "\n"},
+		{token.END, "end"},
 	}
 
 	lexer := New(input)
