@@ -28,6 +28,10 @@ func TestEvalIntegerExpression(t *testing.T) {
 		// /
 		{"10 / 2", 5},
 		{"10 / 3", 3},
+		// %
+		{"10 % 3", 1},
+		{"10 % 2", 0},
+
 	}
 
 	for _, tt := range tests {

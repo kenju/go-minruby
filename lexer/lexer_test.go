@@ -12,6 +12,7 @@ func TestLexer_NextToken(t *testing.T) {
 	4 - 3
 	3 * 4
 	10 / 2
+	10 % 3
 	`
 
 	tests := []struct {
@@ -48,6 +49,13 @@ func TestLexer_NextToken(t *testing.T) {
 		{token.INT, "10"},
 		{token.SLASH, "/"},
 		{token.INT, "2"},
+
+		{token.NEWLINE, "\n"},
+
+		// 10 % 3
+		{token.INT, "10"},
+		{token.PERCENTAGE, "%"},
+		{token.INT, "3"},
 	}
 
 	lexer := New(input)

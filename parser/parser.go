@@ -13,10 +13,10 @@ const (
 	_ int = iota
 	LOWEST
 	EQUALS
-	LESSGREATER // > or <
-	SUM         // +
-	PRODUCT     // *
-	PREFIX      // -x or !x
+	LESSGREATER // >, <
+	SUM         // +, -
+	PRODUCT     // *, /, %
+	PREFIX      // -x, !x
 )
 
 type (
@@ -52,6 +52,7 @@ func New(l *lexer.Lexer) *Parser {
 	p.registerInfix(token.MINUS, p.parseInfixExpression)
 	p.registerInfix(token.ASTERISK, p.parseInfixExpression)
 	p.registerInfix(token.SLASH, p.parseInfixExpression)
+	p.registerInfix(token.PERCENTAGE, p.parseInfixExpression)
 
 	// read two tokens to set curToken/peekToken
 	p.nextToken()
@@ -185,6 +186,8 @@ var precedences = map[token.TokenType]int{
 	// *, /
 	token.ASTERISK: PRODUCT,
 	token.SLASH: PRODUCT,
+	// %
+	token.PERCENTAGE: PRODUCT,
 }
 
 func (p *Parser) curPrecedence() int {

@@ -12,6 +12,7 @@ const (
 	MINUS = "-"
 	ASTERISK = "*"
 	SLASH = "/"
+	PERCENTAGE = "%"
 
 	// Symbols
 	LPAREN = "("
