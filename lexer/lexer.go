@@ -71,7 +71,7 @@ func (l *Lexer) NextToken() token.Token {
 	case ')':
 		tok = newToken(token.RPAREN, l.ch)
 
-	// new lien
+	// new line
 	case '\n':
 		tok = newToken(token.NEWLINE, l.ch)
 
