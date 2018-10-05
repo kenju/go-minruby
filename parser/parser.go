@@ -61,7 +61,6 @@ func New(l *lexer.Lexer) *Parser {
 	p.registerPrefix(token.TRUE, p.parseBoolean)
 	p.registerPrefix(token.FALSE, p.parseBoolean)
 
-
 	// read two tokens to set curToken/peekToken
 	p.nextToken()
 	p.nextToken()
@@ -265,8 +264,8 @@ var precedences = map[token.TokenType]int{
 	token.PLUS:  SUM,
 	token.MINUS: SUM,
 	// *, /, %
-	token.ASTERISK: PRODUCT,
-	token.SLASH:    PRODUCT,
+	token.ASTERISK:   PRODUCT,
+	token.SLASH:      PRODUCT,
 	token.PERCENTAGE: PRODUCT,
 }
 

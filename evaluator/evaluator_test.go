@@ -73,7 +73,7 @@ func TestVariableStatements(t *testing.T) {
 
 func TestEvalBooleanExpressoins(t *testing.T) {
 	tests := []struct {
-		input string
+		input    string
 		expected bool
 	}{
 		{"true", true},
