@@ -32,6 +32,8 @@ func (l *Lexer) NextToken() token.Token {
 		tok = newToken(token.LPAREN, l.ch)
 	case ')':
 		tok = newToken(token.RPAREN, l.ch)
+	case '\n':
+		tok = newToken(token.NEWLINE, l.ch)
 	default:
 		if isLetter(l.ch) {
 			// TODO
@@ -68,7 +70,7 @@ func (l *Lexer) readNumber() string {
 }
 
 func (l *Lexer) skipWhitespace() {
-	for l.ch == ' ' || l.ch == '\t' || l.ch == '\n' || l.ch == '\r' {
+	for l.ch == ' ' || l.ch == '\t' || l.ch == '\r' {
 		l.readChar()
 	}
 }

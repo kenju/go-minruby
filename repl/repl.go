@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"github.com/kenju/go-minruby/lexer"
+	"github.com/kenju/go-minruby/parser"
 	"io"
 )
 
@@ -22,8 +23,26 @@ func Start(in io.Reader, out io.Writer) {
 
 		line := scanner.Text()
 		lexer := lexer.New(line)
+		parser := parser.New(lexer)
+
+		program := parser.ParseProgram()
+		if len(parser.Errors()) != 0 {
+			printParserErrors(out, parser.Errors())
+			continue
+		}
+
+		for _, st := range program.Statements {
+			io.WriteString(out, st.String())
+		}
 
 		io.WriteString(out, line)
 		io.WriteString(out, "\n")
+	}
+}
+
+func printParserErrors(out io.Writer, errors []string) {
+	io.WriteString(out, " parser errors:\n")
+	for _, msg := range errors {
+		io.WriteString(out, "\t"+msg+"\n")
 	}
 }

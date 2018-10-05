@@ -15,6 +15,8 @@ func TestLexer_NextToken(t *testing.T) {
 		expectedType    token.TokenType
 		expectedLiteral string
 	}{
+		{token.NEWLINE, "\n"},
+
 		// p(1 + 1)
 		{token.FUNCTION, "p"},
 		{token.LPAREN, "("},

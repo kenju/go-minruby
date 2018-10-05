@@ -1,6 +1,9 @@
 package token
 
 const (
+	EOF = "EOF"
+	NEWLINE = "NEWLINE"
+
 	// Literals
 	INT = "INT"
 

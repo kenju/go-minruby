@@ -3,7 +3,7 @@ package parser
 import (
 	"fmt"
 	"github.com/kenju/go-minruby/lexer"
-	"github.com/kenju/go-monkey/ast"
+	"github.com/kenju/go-minruby/ast"
 	"testing"
 )
 
