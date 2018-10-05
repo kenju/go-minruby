@@ -5,6 +5,7 @@ import (
 	"github.com/kenju/go-minruby/ast"
 	"github.com/kenju/go-minruby/lexer"
 	"github.com/kenju/go-minruby/token"
+	"strconv"
 )
 
 const (
@@ -42,6 +43,7 @@ func New(l *lexer.Lexer) *Parser {
 
 	// prefix registration
 	p.prefixParseFns = make(map[token.TokenType]prefixParseFn)
+	p.registerPrefix(token.INT, p.parseIntegerLiteral)
 
 	// infix registration
 	p.infixParseFns = make(map[token.TokenType]infixParseFn)
@@ -141,11 +143,25 @@ func (p *Parser) parseInfixExpression(left ast.Expression) ast.Expression {
 	return expression
 }
 
+func (p *Parser) parseIntegerLiteral() ast.Expression {
+	literal := &ast.IntegerLiteral{Token: p.curToken}
+
+	value, err := strconv.ParseInt(p.curToken.Literal, 0, 64)
+	if err != nil {
+		msg := fmt.Sprintf("could not parse %q as integer", p.curToken.Literal)
+		p.errors = append(p.errors, msg)
+		return nil
+	}
+
+	literal.Value = value
+
+	return literal
+}
+
 // infix & prefix
 
-func (p *Parser) registerInfix(tokenType token.TokenType, fn infixParseFn) {
-	p.infixParseFns[tokenType] = fn
-}
+func (p *Parser) registerPrefix(tokenType token.TokenType, fn prefixParseFn) { p.prefixParseFns[tokenType] = fn }
+func (p *Parser) registerInfix(tokenType token.TokenType, fn infixParseFn) { p.infixParseFns[tokenType] = fn }
 
 func (p *Parser) noPrefixParseFnError(t token.TokenType) {
 	msg := fmt.Sprintf("no prefix parse function for %s found", t)

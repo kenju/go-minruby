@@ -35,7 +35,6 @@ func Start(in io.Reader, out io.Writer) {
 			io.WriteString(out, st.String())
 		}
 
-		io.WriteString(out, line)
 		io.WriteString(out, "\n")
 	}
 }
