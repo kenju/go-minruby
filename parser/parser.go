@@ -49,6 +49,7 @@ func New(l *lexer.Lexer) *Parser {
 	// infix registration
 	p.infixParseFns = make(map[token.TokenType]infixParseFn)
 	p.registerInfix(token.PLUS, p.parseInfixExpression)
+	p.registerInfix(token.MINUS, p.parseInfixExpression)
 
 	// read two tokens to set curToken/peekToken
 	p.nextToken()
@@ -176,8 +177,9 @@ func (p *Parser) noPrefixParseFnError(t token.TokenType) {
 // operator precedences
 
 var precedences = map[token.TokenType]int{
-	// +
+	// +, -
 	token.PLUS: SUM,
+	token.MINUS: SUM,
 }
 
 func (p *Parser) curPrecedence() int {
