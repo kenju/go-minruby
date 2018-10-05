@@ -3,10 +3,10 @@ package lexer
 import "github.com/kenju/go-minruby/token"
 
 type Lexer struct {
-	input string
-	position int
+	input        string
+	position     int
 	readPosition int
-	ch byte
+	ch           byte
 }
 
 func New(input string) *Lexer {
@@ -61,7 +61,7 @@ func (l *Lexer) readChar() {
 		l.ch = l.input[l.readPosition]
 	}
 	l.position = l.readPosition // set position
-	l.readPosition += 1 // advance to the next char
+	l.readPosition += 1         // advance to the next char
 }
 
 func (l *Lexer) readNumber() string {
@@ -88,7 +88,7 @@ func isDigit(ch byte) bool {
 
 func newToken(tokenType token.TokenType, ch byte) token.Token {
 	return token.Token{
-		Type: tokenType,
+		Type:    tokenType,
 		Literal: string(ch),
 	}
 }

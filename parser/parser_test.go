@@ -2,19 +2,20 @@ package parser
 
 import (
 	"fmt"
-	"github.com/kenju/go-minruby/lexer"
-	"github.com/kenju/go-minruby/ast"
 	"testing"
+
+	"github.com/kenju/go-minruby/ast"
+	"github.com/kenju/go-minruby/lexer"
 )
 
 func TestParsingInfixExpressions(t *testing.T) {
 	tests := []struct {
-		input string
-		leftValue interface{}
-		operator string
+		input      string
+		leftValue  interface{}
+		operator   string
 		rightValue interface{}
 	}{
-		{ "1 + 1", 1, "+", 1 },
+		{"1 + 1", 1, "+", 1},
 	}
 
 	for _, tt := range tests {

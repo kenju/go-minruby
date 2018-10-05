@@ -2,10 +2,11 @@ package parser
 
 import (
 	"fmt"
+	"strconv"
+
 	"github.com/kenju/go-minruby/ast"
 	"github.com/kenju/go-minruby/lexer"
 	"github.com/kenju/go-minruby/token"
-	"strconv"
 )
 
 const (
@@ -24,10 +25,10 @@ type (
 )
 
 type Parser struct {
-	l *lexer.Lexer
+	l      *lexer.Lexer
 	errors []string
 
-	curToken token.Token
+	curToken  token.Token
 	peekToken token.Token
 
 	// maps for checking if the appropriate map has a parsing function associated with curToken.Type.
@@ -37,7 +38,7 @@ type Parser struct {
 
 func New(l *lexer.Lexer) *Parser {
 	p := &Parser{
-		l: l,
+		l:      l,
 		errors: []string{},
 	}
 
@@ -84,7 +85,7 @@ func (p *Parser) nextToken() {
 	p.peekToken = p.l.NextToken()
 }
 
-func (p *Parser) curTokenIs(t token.TokenType) bool { return p.curToken.Type == t }
+func (p *Parser) curTokenIs(t token.TokenType) bool  { return p.curToken.Type == t }
 func (p *Parser) peekTokenIs(t token.TokenType) bool { return p.peekToken.Type == t }
 
 // parse core logic
@@ -131,9 +132,9 @@ func (p *Parser) parseExpression(precedence int) ast.Expression {
 
 func (p *Parser) parseInfixExpression(left ast.Expression) ast.Expression {
 	expression := &ast.InfixExpression{
-		Token: p.curToken,
+		Token:    p.curToken,
 		Operator: p.curToken.Literal,
-		Left: left,
+		Left:     left,
 	}
 
 	precedence := p.curPrecedence()
@@ -160,14 +161,17 @@ func (p *Parser) parseIntegerLiteral() ast.Expression {
 
 // infix & prefix
 
-func (p *Parser) registerPrefix(tokenType token.TokenType, fn prefixParseFn) { p.prefixParseFns[tokenType] = fn }
-func (p *Parser) registerInfix(tokenType token.TokenType, fn infixParseFn) { p.infixParseFns[tokenType] = fn }
+func (p *Parser) registerPrefix(tokenType token.TokenType, fn prefixParseFn) {
+	p.prefixParseFns[tokenType] = fn
+}
+func (p *Parser) registerInfix(tokenType token.TokenType, fn infixParseFn) {
+	p.infixParseFns[tokenType] = fn
+}
 
 func (p *Parser) noPrefixParseFnError(t token.TokenType) {
 	msg := fmt.Sprintf("no prefix parse function for %s found", t)
 	p.errors = append(p.errors, msg)
 }
-
 
 // operator precedences
 

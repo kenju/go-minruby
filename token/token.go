@@ -1,7 +1,7 @@
 package token
 
 const (
-	EOF = "EOF"
+	EOF     = "EOF"
 	NEWLINE = "NEWLINE"
 
 	// Literals

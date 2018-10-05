@@ -1,10 +1,11 @@
 package evaluator
 
 import (
-	"github.com/kenju/go-minruby/lexer"
-	"github.com/kenju/go-minruby/parser"
-	"github.com/kenju/go-minruby/object"
 	"testing"
+
+	"github.com/kenju/go-minruby/lexer"
+	"github.com/kenju/go-minruby/object"
+	"github.com/kenju/go-minruby/parser"
 )
 
 func TestEvalIntegerExpression(t *testing.T) {
