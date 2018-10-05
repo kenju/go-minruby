@@ -13,6 +13,14 @@ OK_STRING    = "[OK]"
 ERROR_STRING = "[ERROR]"
 WARN_STRING  = "[WARNING]"
 
+## Build binaries and run
+run: build
+	./go-minruby
+
+## Build binaries
+build:
+	go build -ldflags "$(LDFLAGS)"
+
 ## Initial Setup
 setup:
 	go get github.com/golang/lint/golint
