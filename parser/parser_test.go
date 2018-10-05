@@ -109,6 +109,39 @@ func TestOperatorPrecedenceParsing(t *testing.T) {
 	}
 }
 
+func TestVariables(t *testing.T) {
+	tests := []struct {
+		input              string
+		expectedIdentifier string
+		expectedValue      interface{}
+	}{
+		{"x = 10", "x", 10},
+		{"y = x", "y", "x"},
+	}
+
+	for _, tt := range tests {
+		lexer := lexer.New(tt.input)
+		parser := New(lexer)
+		program := parser.ParseProgram()
+		checkParserErrors(t, parser)
+
+		if len(program.Statements) != 1 {
+			t.Fatalf("program.Statements does not contain 1 statements. got=%d",
+				len(program.Statements))
+		}
+
+		stmt := program.Statements[0]
+		if !testVariableStatement(t, stmt, tt.expectedIdentifier) {
+			return
+		}
+
+		val := stmt.(*ast.VariableStatement).Value
+		if !testLiteralExpression(t, val, tt.expectedValue) {
+			return
+		}
+	}
+}
+
 func testInfixExpression(t *testing.T, exp ast.Expression, left interface{},
 	operator string, right interface{}) bool {
 
@@ -210,6 +243,26 @@ func testBooleanLiteral(t *testing.T, exp ast.Expression, value bool) bool {
 	if bo.TokenLiteral() != fmt.Sprintf("%t", value) {
 		t.Errorf("bo.TokenLiteral not %t. got=%s",
 			value, bo.TokenLiteral())
+		return false
+	}
+
+	return true
+}
+
+func testVariableStatement(t *testing.T, s ast.Statement, name string) bool {
+	stmt, ok := s.(*ast.VariableStatement)
+	if !ok {
+		t.Errorf("s not *ast.LetStatement. got=%T", s)
+		return false
+	}
+
+	if stmt.Name.Value != name {
+		t.Errorf("letStmt.Name.Value not '%s'. got=%s", name, stmt.Name.Value)
+		return false
+	}
+
+	if stmt.Name.TokenLiteral() != name {
+		t.Errorf("s.Name not '%s'. got=%s", name, stmt.Name)
 		return false
 	}
 

@@ -52,6 +52,25 @@ func TestEvalIntegerExpression(t *testing.T) {
 	}
 }
 
+func TestVariableStatements(t *testing.T) {
+	tests := []struct {
+		input    string
+		expected int64
+	}{
+		{
+			input: `
+				x = 5
+				x
+			`,
+			expected: 5,
+		},
+	}
+
+	for _, tt := range tests {
+		testIntegerObject(t, testEval(tt.input), tt.expected)
+	}
+}
+
 func testEval(input string) object.Object {
 	l := lexer.New(input)
 	p := parser.New(l)

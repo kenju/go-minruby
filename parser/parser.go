@@ -89,7 +89,28 @@ func (p *Parser) ParseProgram() *ast.Program {
 
 func (p *Parser) parseStatement() ast.Statement {
 	switch p.curToken.Type {
-	//TODO: handle return, or any other else
+	case token.IDENT:
+		if !p.peekTokenIs(token.ASSIGN) {
+			// if the next token is not '=', the identifier is not for assignment so treat it at (p *Parser).parseIdentifier()
+			return p.parseExpressionStatement()
+		} else {
+			vs := &ast.VariableStatement{
+				Token: p.curToken, // token.IDENT comes in
+				Name:  &ast.Identifier{Token: p.curToken, Value: p.curToken.Literal},
+			}
+
+			p.nextToken() // do nothing with token.ASSIGN
+			p.nextToken()
+
+			vs.Value = p.parseExpression(LOWEST)
+
+			for p.curTokenIs(token.NEWLINE) {
+				p.nextToken()
+			}
+
+			return vs
+		}
+
 	default:
 		return p.parseExpressionStatement()
 	}

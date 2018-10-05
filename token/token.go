@@ -12,6 +12,7 @@ const (
 	INT = "INT"
 
 	// Operators
+	ASSIGN     = "="
 	PLUS       = "+"
 	MINUS      = "-"
 	ASTERISK   = "*"

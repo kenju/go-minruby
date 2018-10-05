@@ -23,7 +23,11 @@ func (l *Lexer) NextToken() token.Token {
 	l.skipWhitespace()
 
 	switch l.ch {
+
 	// operators
+	case '=':
+		// NOTE: if you support '==' for boolean, fix this statement
+		tok = newToken(token.ASSIGN, l.ch)
 	case '+':
 		tok = newToken(token.PLUS, l.ch)
 	case '-':
