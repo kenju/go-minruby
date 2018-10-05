@@ -8,7 +8,8 @@ const (
 	INT = "INT"
 
 	// Operators
-	PLUS = "+"
+	PLUS  = "+"
+	MINUS = "-"
 
 	// Symbols
 	LPAREN = "("

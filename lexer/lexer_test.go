@@ -9,6 +9,7 @@ import (
 func TestLexer_NextToken(t *testing.T) {
 	input := `
 	p(1 + 1)
+	4 - 3
 	`
 
 	tests := []struct {
@@ -24,6 +25,14 @@ func TestLexer_NextToken(t *testing.T) {
 		{token.PLUS, "+"},
 		{token.INT, "1"},
 		{token.RPAREN, ")"},
+
+		{token.NEWLINE, "\n"},
+
+		// 4 - 3
+		{token.INT, "4"},
+		{token.MINUS, "-"},
+		{token.INT, "3"},
+
 	}
 
 	lexer := New(input)
