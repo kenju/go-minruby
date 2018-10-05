@@ -13,15 +13,15 @@ const (
 	_ int = iota
 	LOWEST
 	EQUALS
-	LESSGREATER  // >, <
-	SUM          // +, -
-	PRODUCT      // *, /, %
-	PREFIX       // -x, !x
+	LESSGREATER // >, <
+	SUM         // +, -
+	PRODUCT     // *, /, %
+	PREFIX      // -x, !x
 )
 
 type (
 	prefixParseFn func() ast.Expression
-	infixParseFn func(ast.Expression) ast.Expression
+	infixParseFn  func(ast.Expression) ast.Expression
 )
 
 type Parser struct {

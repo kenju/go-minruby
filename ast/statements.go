@@ -3,6 +3,7 @@ package ast
 import (
 	"github.com/kenju/go-minruby/token"
 )
+
 // Statement
 
 type ExpressionStatement struct {
