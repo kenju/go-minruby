@@ -29,6 +29,10 @@ hello
 10
 (=･ω･=)>> if (1 > 3); 10; else 20; end
 20
+(=･ω･=)>> name = "Mr. Foo"
+(=･ω･=)>> msg = "Hello, " + name + "!"
+(=･ω･=)>> msg
+Hello, Mr. Foo!
 ```
 
 # References
