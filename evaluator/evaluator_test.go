@@ -99,6 +99,31 @@ func TestEvalBooleanExpressions(t *testing.T) {
 	}
 }
 
+func TestIfElseExpressions(t *testing.T) {
+	tests := []struct {
+		input    string
+		expected interface{}
+	}{
+		{"if true; 10; end", 10},
+		{"if false; 10; end", nil},
+		{"if 1; 10; end", 10},
+		{"if 1 < 2; 10; end", 10},
+		{"if 1 > 2; 10; end", nil},
+		{"if 1 > 2; 10; else; 20; end", 20},
+		{"if 1 < 2; 10; else; 20; end", 10},
+	}
+
+	for _, tt := range tests {
+		evaluated := testEval(tt.input)
+		integer, ok := tt.expected.(int)
+		if ok {
+			testIntegerObject(t, evaluated, int64(integer))
+		} else {
+			testNullObject(t, evaluated)
+		}
+	}
+}
+
 func TestStringLiteral(t *testing.T) {
 	input := `"Hello World!"`
 
@@ -149,5 +174,13 @@ func testBooleanObject(t *testing.T, obj object.Object, expected bool) bool {
 		return false
 	}
 
+	return true
+}
+
+func testNullObject(t *testing.T, obj object.Object) bool {
+	if obj != NULL {
+		t.Errorf("object is not NULL. got=%T (%+v)", obj, obj)
+		return false
+	}
 	return true
 }

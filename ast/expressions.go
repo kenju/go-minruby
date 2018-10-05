@@ -2,6 +2,7 @@ package ast
 
 import (
 	"bytes"
+	"fmt"
 	"strings"
 
 	"github.com/kenju/go-minruby/token"
@@ -78,6 +79,30 @@ type StringLiteral struct {
 func (sl *StringLiteral) expressionNode()      {}
 func (sl *StringLiteral) TokenLiteral() string { return sl.Token.Literal }
 func (sl *StringLiteral) String() string       { return sl.Token.Literal }
+
+type IfExpression struct {
+	Token token.Token
+	Condition Expression
+	Consequence *BlockStatement
+	Alternative *BlockStatement
+}
+
+func (ie *IfExpression) expressionNode() {}
+func (ie *IfExpression) TokenLiteral() string { return ie.Token.Literal }
+func (ie *IfExpression) String() string {
+	var out bytes.Buffer
+
+	out.WriteString(fmt.Sprintf("if %s; ", ie.Condition.String()))
+	out.WriteString(fmt.Sprintf("%s; ", ie.Consequence.String()))
+
+	if ie.Alternative != nil {
+		out.WriteString(fmt.Sprintf("else; %s; ", ie.Alternative.String()))
+	}
+
+	out.WriteString("end")
+
+	return out.String()
+}
 
 type CallExpression struct {
 	Token     token.Token

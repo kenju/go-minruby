@@ -25,6 +25,10 @@ false
 (=･ω･=)>> msg = "hello"
 (=･ω･=)>> msg
 hello
+(=･ω･=)>> if true; 10; end
+10
+(=･ω･=)>> if (1 > 3); 10; else 20; end
+20
 ```
 
 # References
