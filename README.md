@@ -25,4 +25,6 @@ false
 ```
 
 # References
-https://github.com/mame/cookpad-hackarade-minruby
+
+- https://github.com/mame/cookpad-hackarade-minruby
+- https://github.com/kenju/go-monkey
